@@ -37,9 +37,9 @@ knapp = Button(bottomFrame, text="Submit")
 knapp.pack()
 # Create a Tkinter variable
 
-choices = { "Pizza","Lasagne","Fries","Fish","Potatoe"}
-tkvar = StringVar(root)
-tkvar.set(choices[0])
+choices = [ "dasds","Medium","Hard"]
+tkvar = StringVar()
+tkvar.set(choices[1])
 popupMenu = OptionMenu(root, tkvar, *choices)
 popupMenu.pack()
 root.mainloop()
