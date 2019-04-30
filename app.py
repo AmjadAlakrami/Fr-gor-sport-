@@ -1,4 +1,6 @@
 from tkinter import *
+import tkinter as ttk
+from ttk import *
 
 root = Tk()
 
@@ -19,20 +21,25 @@ label3.grid(row=2, sticky=E )
 TextINP1= Entry(topFrame, )
 TextINP1.grid(row=0, column=1 )
 
-Checkbox1= Checkbutton(topFrame, text="Medium")
-Checkbox1.grid(row=1, column=1, sticky=E)
-Checkbox2= Checkbutton(topFrame, text="Easy" )
-Checkbox2.grid(row=1, column=1, sticky=W)
-Checkbox3= Checkbutton(topFrame, text="Hard" )
-Checkbox3.grid(row=1, column=2, sticky=W)
-Checkbox4= Checkbutton(topFrame, text="Random" )
-Checkbox4.grid(row=1, column=3, sticky=W)
+# Checkbox1= Checkbutton(topFrame, text="Medium")
+# Checkbox1.grid(row=1, column=1, sticky=E)
+# Checkbox2= Checkbutton(topFrame, text="Easy" )
+# Checkbox2.grid(row=1, column=1, sticky=W
+# Checkbox3= Checkbutton(topFrame, text="Hard" )
+# Checkbox3.grid(row=1, column=2, sticky=W)
+# Checkbox4= Checkbutton(topFrame, text="Random" )
+# Checkbox4.grid(row=1, column=3, sticky=W)
 
 TextINP3= Entry(topFrame, )
 TextINP3.grid(row=2, column=1 )
 
 knapp = Button(bottomFrame, text="Submit")
 knapp.pack()
+# Create a Tkinter variable
 
-
+choices = { "Pizza","Lasagne","Fries","Fish","Potatoe"}
+tkvar = StringVar(root)
+tkvar.set(choices[0])
+popupMenu = OptionMenu(root, tkvar, *choices)
+popupMenu.pack()
 root.mainloop()
