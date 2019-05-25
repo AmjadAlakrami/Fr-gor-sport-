@@ -1,20 +1,16 @@
 from tkinter import *
-
-# the constructor syntax is:
-# OptionMenu(master, variable, *values)
-
-OPTIONS = [
-    "egg",
-    "bunny",
-    "chicken"
-]
-
+import requests
 master = Tk()
 
-variable = StringVar(master)
-variable.set(OPTIONS[0]) # default value
+def callback():
+    r = requests.get('https://opentdb.com/api.php?amount='+ str(a) )# använder get request för att hämta värden från  den urlen, och sedan lagrar de i variabel r
+    res = r.json ()
+    for data in res ['results']:
+        print(data["question"])
 
-w = apply(OptionMenu, (master, variable) + tuple(OPTIONS))
-w.pack()
+b = Button(master, text="OK", command=callback)
+b.pack()
+a = Entry(master)
+a.pack()
 
 mainloop()
