@@ -1,4 +1,5 @@
 import requests
+<<<<<<< HEAD
 from tkinter import * 
 
 class Defec:
@@ -39,3 +40,8 @@ Button.pack()
 name = StringVar()
 
 master.mainloop()
+=======
+
+
+g = ""
+>>>>>>> 98fa717c38211ba0ac7f797d64329dbe17b7235d
