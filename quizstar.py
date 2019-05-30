@@ -88,6 +88,7 @@ def calc():
             score = score + 5
         x += 1
     print(score)
+    print (indexes)
     showresult(score)
 
 
@@ -197,7 +198,7 @@ root.config(background="#ffffff")
 root.resizable(0,0)
 
 
-img1 = PhotoImage(file="transparentGradHat.png")
+img1 = PhotoImage(file="Brain.png")
 
 labelimage = Label(
     root,
