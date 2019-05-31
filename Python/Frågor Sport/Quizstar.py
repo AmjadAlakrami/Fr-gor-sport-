@@ -1,39 +1,41 @@
-from tkinter import * #importera allt from tkinter
+#Importera olika biblotek
+from tkinter import * 
 import tkinter as tk
 from tkinter import font  as tkfont
 import requests
 import random
 
-
-
+#namn, storlek, bakgrundfärg på tk fönstret
 root = Tk()
 root.title("Quizstar")
 root.geometry("700x600")
 root.config(background="#ffffff")
-root.resizable(0,0)
+root.resizable(0,0)#så att det inte går att ändra storleken på fönstret
 
-Answer=[
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    []
-] 
-
-a =(random.sample(range(0 , 4), 4))
-
+#skapar listor
+Answer=[] 
 Right_Answers = [] 
 User_Answer = []
+QuestionList=[]
 
-r = requests.get('https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple')# använder get request för att hämta värden från  den urlen, och sedan lagrar de i variabel r
+# Skickar en get request till urlen, och ändra det till json fill
+r = requests.get('https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple')
 res = r.json ()
+f = 0
+#Hämtar data från dictionary .. lagra de i olika variabler .. lagra variablerna i olika listor 
+for data in res['results']:
+    Question = (data['question'])
+    Incorrect = (data['incorrect_answers'])
+    Correct= (data['correct_answer'])
+    QuestionList.append(Question)
+    Answer.append(Incorrect)
+    Answer[f].append(Correct)
+    Right_Answers.append(Correct)
+    f += 1 
+    random.shuffle(Answer[f-1]) # blanda Answer lista
 
-
+#En function som tar bort de komponenterna som finns på fönstret efter att vi har kört programmet
+#då får vi ett tomt fönster som vi sedan kan skriva frågora på genom att köra Start_Quiz functionen
 def Go():
     Image_Label.destroy()
     Text_Label.destroy()
@@ -41,45 +43,28 @@ def Go():
     Instruction_Label.destroy()
     Start_Button.destroy()
     Start_Quiz()
-
-
-def Calculate():
-    global User_Answer, Right_Answers
-    Score = 0
-    if User_Answer[0] == Right_Answers[0]:
-            Score = Score + 5
-    if User_Answer[1] == Right_Answers[1]:
-            Score = Score + 5
-    if User_Answer[2] == Right_Answers[2]:
-            Score = Score + 5
-    if User_Answer[3] == Right_Answers[3]:
-            Score = Score + 5
-    if User_Answer[4] == Right_Answers[4]:
-            Score = Score + 5
-    if User_Answer[5] == Right_Answers[5]:
-            Score = Score + 5
-    if User_Answer[6] == Right_Answers[6]:
-            Score = Score + 5
-    if User_Answer[7] == Right_Answers[7]:
-            Score = Score + 5 
-    if User_Answer[8] == Right_Answers[8]:
-            Score = Score + 5
-    if User_Answer[9] == Right_Answers[9]:
-            Score = Score + 5            
-    Show_Result(Score)
-    print(User_Answer)
-    print(Right_Answers)
-
     
-ques = 1
-Place = 0
+#En function som räknar hur många pöäng man får för varje rättt fråga 
+#Den jämför User_Answer listan med Right_Answers, och för varje element som är samma så lägger den 5 i score variabel
+#Sen kör den Show_Result och skickar argumenten score 
+def Calculate():
+    Score = 0
+    rand = range(10)
+    for i in rand: 
+        if User_Answer[i] == Right_Answers[i]:
+            Score = Score + 5
+    Show_Result(Score)
+
+ques = 0
 
 def Show_Result(Score):
+    #tar bort komponenter
     Question_Label.destroy()
     Select1.destroy()
     Select2.destroy()
     Select3.destroy()
     Select4.destroy()
+    # Skapar två Label
     Image_Label = Label(
         root,
         background = "#ffffff",
@@ -93,6 +78,7 @@ def Show_Result(Score):
     )
     Resule_Label.pack()
     FinScore = ("Your Score are: " +str(Score) +" /50")
+    #Sätta en bild på image_Label och en text på Resule_Label beronde på värdet på Score
     if Score >= 20:
         img = PhotoImage(file="great.png")
         Image_Label.configure(image=img)
@@ -117,90 +103,74 @@ def Show_Result(Score):
 
 def selected():
     
-    global AnswerVar,User_Answer, Right_Answers
-    global Select1, Select2, Select3, Select4, Question_Label
-    global UserAns1, UserAns2, UserAns3, UserAns4 
-    global ques, Place
+    global Select1, Select2, Select3, Select4, Question_Label, ques #globala variabler som används från functionen Start_Quiz
+
+    #Hämtar AnserVar värdet som är Radiobutton variabel
+    # varje Radiobutton har en variabel som definer vilket av de fyra kompnenterna det är 
+    # vi lagrar det värdet i x  
     x = AnswerVar.get()
-    AnswerVar.set(-1)
-    b = res['results'][Place]['incorrect_answers'][0],
-    c = res['results'][Place]['incorrect_answers'][1],
-    d = res['results'][Place]['incorrect_answers'][2],
-    e = res['results'][Place]['correct_answer'],
+    AnswerVar.set(-1)#Radiobutton vi valde sist checkas bort 
 
-    Answer[Place].append(b)
-    Answer[Place].append(c)
-    Answer[Place].append(d)
-    Answer[Place].append(e)
-    Right_Answers.append(e)
-
-    UserAns1 = Answer[Place][a[0]]
-    UserAns2 = Answer[Place][a[1]]
-    UserAns3 = Answer[Place][a[2]]
-    UserAns4 = Answer[Place][a[3]]
-
+    
+    #läger användarens svar i User_Answer lista beroende på värdet på x
+    #Alltså vilket Radiobutton användaren valde 
     if x == 0:
-        User_Answer.append(UserAns1)
+           User_Answer.append(Answer[ques][0])
     elif x == 1:
-        User_Answer.append(UserAns2)
+           User_Answer.append(Answer[ques][1])
     elif x == 2:
-        User_Answer.append(UserAns3)
+           User_Answer.append(Answer[ques][2])
     elif x == 3:
-        User_Answer.append(UserAns4)
+        User_Answer.append(Answer[ques][3])
+    
+    ques += 1
+
+    # Om ques är mindre än 10, så  ändras texten på Question _Label och Radiobutton komponeneter 
+    #Annars så kör den Calculate function
     if ques < 10:
-        Question_Label.config(text= res['results'][Place]['question'])
-        Select1['text'] = UserAns1,
-        Select2['text'] = UserAns2,
-        Select3['text'] = UserAns3,
-        Select4['text'] = UserAns4,
-        ques += 1
-        Place +=1
-        print(x)
+        Question_Label.config(text= QuestionList[ques])
+        Select1['text'] = Answer[ques][0]
+        Select2['text'] = Answer[ques][1]
+        Select3['text'] = Answer[ques][2]
+        Select4['text'] = Answer[ques][3]
     else:
         Calculate()
-    
-    
 
-
+#functionen som skapar Radiobutton komponenter och Question_Label 
 def Start_Quiz():
     
     global Select1, Select2, Select3, Select4, Question_Label
-    
-    Question_Label = Label(
-        root,
-        text = res['results'][Place]['question'],
-        font = ("Consolas", 16),
-        width = 500,
-        justify = "center",
-        wraplength = 400,
-        background = "#ffffff",
-    )
-    Question_Label.pack(pady=(100,30))
 
+ 
+    Question_Label = Label(
+        root, #vilket fänster
+        text = QuestionList[0], #vad för text
+        font = ("Consolas", 16), #vilken font och vilken storlek 
+        justify = "center", #centrera 
+        wraplength = 400, #bredden
+        background = "#ffffff", #bakgrunds färg
+    )
+    Question_Label.pack(pady=(100,30)) 
+    
     global AnswerVar
    
     AnswerVar = IntVar()
     AnswerVar.set(-1)
-    global UserAns1, UserAns2, UserAns3, UserAns4 
-    UserAns1 = StringVar()
-    UserAns2 = StringVar()
-    UserAns3 = StringVar()
-    UserAns4 = StringVar()
-   
+
     Select1 = Radiobutton(
         root,
-        text = UserAns1,
+        text = Answer[0][0],
         font = ("Times", 12),
         value = 0,
         variable = AnswerVar,
-        command = selected,
+        command = selected, #vilken function som ska köras när man trycker på den komponenten 
         background = "#ffffff",
     )
     Select1.pack(pady=5)
 
     Select2 = Radiobutton(
         root,
-        text = UserAns2,
+        text = Answer[0][1],
         font = ("Times", 12),
         value = 1,
         variable = AnswerVar,
@@ -208,10 +178,10 @@ def Start_Quiz():
         background = "#ffffff",
     )
     Select2.pack(pady=5)
-
+    
     Select3 = Radiobutton(
         root,
-        text = UserAns3,
+        text = Answer[0][2],
         font = ("Times", 12),
         value = 2,
         variable = AnswerVar,
@@ -222,7 +192,7 @@ def Start_Quiz():
 
     Select4 = Radiobutton(
         root,
-        text = UserAns4,
+        text = Answer[0][3],
         font = ("Times", 12),
         value = 3,
         variable = AnswerVar,
@@ -230,10 +200,6 @@ def Start_Quiz():
         background = "#ffffff",
     )
     Select4.pack(pady=5)
-
-
-
-       
 
 img1 = PhotoImage(file="Brain.png")
 
@@ -275,7 +241,7 @@ Start_Mess.pack(pady=(10,100))
 
 Instruction_Label = Label(
     root,
-    text = "This quiz contains 10 questions\nOnce you Right_Answers, that will be a final choice\nthink carefully before you select\nGood Luck!",
+    text = "This quiz contains 10 questions\nOnce you answer, that will be a final choice\nthink carefully before you select\nGood Luck!",
     width = 100,
     font = ("Times",14),
     background = "#000000",

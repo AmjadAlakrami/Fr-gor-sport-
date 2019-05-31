@@ -1,0 +1,23 @@
+REDME:
+*******
+Mappen är uppdeald i två mappar. 
+
+Python: 
+	I den mappen finns två mappar till:
+
+		Det ena (Kompendium) är för kompendium uppgifterna. I den mappen finns en map för varje kapitel i kompendiet
+
+		Det andra (Frågor sport) är för mini-projektet. I den mappen finns koden för frågorsport projektet, den är gjord i Tkinter. 
+
+		Det finns också några bilder som är relevanta till programmet.
+
+Robot: 
+	I den mappen dinns fyra mappar till: 
+
+		Det ena (CAD-filler) är för CAD filler. I den mappen finns CAD filer som är relevanta (robot delar) för robot-projektet. Det finns också en mapp (Egen CAD) som innehåller en CAD-fil som jag gjorde i fritiden.
+
+		Det andra (Graf), där hittar ni tillståndgrafen.
+
+		Det tredje (Kod). Där finns Arduino koden för roboten. Det finns även MQTT koden. MQTT koden finns i en separat mapp som heter MQTT
+
+		Det fjärde (video). Där hittar ni video där jag berättar om några funktioner i min robot.
